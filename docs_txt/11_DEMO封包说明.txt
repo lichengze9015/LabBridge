@@ -15,10 +15,10 @@
   项        |  数量                 |  说明
   ──────────+───────────────────────+──────────────────────────────────────────────────────────────────────────────────────────────────────────
   独立 EXE  |  3 个                 |  `LabBridgeV2.exe`（主程序）、`LabBridge_PDCA.exe`（PDCA 工具集）、`LabBridge_NHANES.exe`（真实数据回放）
-  源码模块  |  15 个 + 主程序       |  `app/code/labbridge_*.py` 共 7085 行；`app/labbridge_v2_app.py` 3230 行
+  源码模块  |  15 个 + 主程序       |  `app/code/labbridge_*.py` 共 7117 行；`app/labbridge_v2_app.py` 3231 行
   受控配置  |  8 个 + `SHA256SUMS`  |  `app/config/` 下 5 个 yaml、2 个 csv，另加规则表一份；2026-10-30 校验 0 失配
   打包配置  |  3 份                 |  `LabBridgeV2.spec`、`LabBridge_PDCA.spec`、`LabBridge_NHANES.spec`
-  验收脚本  |  3 份                 |  `test_v240.py`（46 项）、`test_gui_v240.py`（11 页签）、`test_cloudpanel.py`（22 项）
+  验收脚本  |  3 份                 |  `test_v240.py`（48 项）、`test_gui_v240.py`（11 页签）、`test_cloudpanel.py`（22 项）
   交付文档  |  2 份                 |  `部署与使用指南.md`、`真实数据测试报告_NHANES血常规.md`
 
 
@@ -44,8 +44,8 @@
 │ ├── README.md                       交付总入口（先看这个）
 │ ├── 01_软件封包/
 │ │   ├── app/
-│ │   │   ├── labbridge_v2_app.py     主程序源码（tkinter GUI，3230 行，11 页签）
-│ │   │   ├── code/                   15 个核心模块（均带 --selftest，共 7085 行）
+│ │   │   ├── labbridge_v2_app.py     主程序源码（tkinter GUI，3231 行，11 页签）
+│ │   │   ├── code/                   15 个核心模块（均带 --selftest，共 7117 行）
 │ │   │   │   ├── README.md / THIRD_PARTY_NOTICES.md
 │ │   │   ├── config/                 受控规则文件 8 个 + SHA256SUMS
 │ │   │   ├── *.spec                  3 份 PyInstaller 打包配置
