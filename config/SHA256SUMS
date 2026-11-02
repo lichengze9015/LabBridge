@@ -1,0 +1,14 @@
+# LabBridge 受控配置 SHA-256 清单
+# 签署人：release-build
+# 签署时间：2026-10-29T23:16:12+08:00
+# 变更原因：V2.5.1 发布基线签署
+# 重签次数：0
+# 格式：<sha256>  <文件名>
+ce86255b4499906ad0a0e3eac08f516b9935be7c432b8a44e0121c88a1897619  acceptance.yaml
+1d9821bfc00137a091cbe2fee430eaa76299ee0331402b67c4c89e1339e7e7b0  access_map.csv
+d2ef022f240f3d6a8cdb7bae73bd9a2fa074505c5e3aee97cb413ebd362d4952  classification_rules.yaml
+d5a692f3dd2b1f6ea7fa83e55eaba6da473c12410ab420481afd6b32bdb28c8c  critical_values.yaml
+96ebd0c7e370303520cac5aefabbc3fa1f0335fff483abd48415c23a0cfd65b7  risk_register.csv
+0f3a2e59af13f6eba0a2491388046c7f9c17ad21231384f0c0f9c8983f1b1791  roles.yaml
+66835ee0bed5adf8d0874a0966a328979f55dcd9e1fa0c2e59d02a9dca4225bc  screening_rules.yaml
+4710c1ebf2b7cf4d2c0ff8100e7b2bb8806149137976565785d0a8fb5c8b2348  stage_gate.yaml

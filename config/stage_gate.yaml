@@ -1,0 +1,36 @@
+# 阶段门：四阶段顺序约束
+# 对应文档 02 第四节（目标执行先后顺序）
+#
+# 「顺序即红线」：阶段三的风险评估未通过，不得进入阶段四。
+# 这不是一句口号，是 labbridge_gate.StageGate 里的一条 if —— 缺失前置条件
+# 时 can_load_sensitive() 返回 blocked，require_sensitive() 直接抛异常阻断。
+
+meta:
+  version: 1.0
+  effective_from: 2026-10-22
+  signed_by: 待签署
+
+stages:
+  - id: stage1
+    name: 公共数据测试
+    desc: 验证基础 Agent 流程
+    base_strategy: 公共大模型可选
+  - id: stage2
+    name: 非敏感内部数据测试
+    desc: 验证业务文档适配，积累风险识别经验
+    base_strategy: 公共大模型可选
+  - id: stage3
+    name: 敏感数据接入专项风险评估
+    desc: 审批管控方案
+    base_strategy: 不涉及数据加载
+  - id: stage4
+    name: 受控接入真实敏感数据实测
+    desc: 采集运行数据输出结论
+    base_strategy: 依据前期测试与风险评估决策
+
+sensitive_data_load:
+  requires:
+    - risk_assessment_approved
+    - control_measures_deployed
+  on_missing: block
+  message: 阶段三评审未通过，不得进入阶段四（文档02：顺序即红线）

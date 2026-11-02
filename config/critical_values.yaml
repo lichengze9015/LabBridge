@@ -1,0 +1,45 @@
+# 危急值阈值表（R2 规则参数）
+# 对应文档 04 第四章第 3 点「危急值预筛」
+#
+# 说明：以下阈值为 Demo 演示用的通用参考区间，**正式上线前必须由医院检验科
+# 按本院方法与人群签署确认**。本表属于受控规则文件，变更须走变更控制程序。
+
+meta:
+  version: 1.0
+  effective_from: 2026-10-22
+  signed_by: 待签署
+  warning: 演示阈值，须由检验科按本院方法学确认后方可用于真实场景
+
+values:
+  K:
+    low: 2.5
+    high: 6.5
+    unit: mmol/L
+  GLU:
+    low: 2.2
+    high: 27.8
+    unit: mmol/L
+  HGB:
+    low: 50.0
+    high: 200.0
+    unit: g/L
+  PLT:
+    low: 20.0
+    high: 1000.0
+    unit: 10^9/L
+  WBC:
+    low: 1.0
+    high: 30.0
+    unit: 10^9/L
+  RBC:
+    low: 1.5
+    high: 8.0
+    unit: 10^12/L
+  CREA:
+    low: 20.0
+    high: 700.0
+    unit: umol/L
+  ALT:
+    low: 1.0
+    high: 1000.0
+    unit: U/L

@@ -1,0 +1,10 @@
+# 统一行尾：仓库内一律 LF，检出时按各平台默认
+* text=auto eol=lf
+
+# 二进制与产物不参与行尾转换与 diff
+*.png binary
+*.jpg binary
+*.ico binary
+*.exe binary
+*.docx binary
+*.xpt binary

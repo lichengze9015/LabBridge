@@ -1,0 +1,54 @@
+# 权限矩阵：用户等级 × 数据等级 → 字段形态
+# 对应文档 05 第三章 3.1（用户等级）与 3.2（权限矩阵）
+#
+# 形态三值：raw（原文）/ mask（掩码）/ hidden（隐藏）
+# 默认最小授予（文档 05 3.3）：例外需显式申请与审批，工程师的全域权限同样受日志约束。
+
+meta:
+  version: 1.0
+  effective_from: 2026-10-22
+  signed_by: 待签署
+  principle: 权限默认最小授予，例外需显式申请与审批
+
+roles:
+  engineer:
+    desc: 全域权限（系统维护、配置、排障）
+  director:
+    desc: 科室级，可终审高风险结论
+  lead:
+    desc: 组级，可复核
+  technician:
+    desc: 仅本人业务范围内的脱敏字段
+  auditor:
+    desc: 内审/外审只读，可查日志与策略命中
+
+# 角色 × 数据等级 → 字段形态
+form_matrix:
+  engineer:
+    public: raw
+    internal: raw
+    sensitive: mask
+  director:
+    public: raw
+    internal: raw
+    sensitive: mask
+  lead:
+    public: raw
+    internal: raw
+    sensitive: hidden
+  technician:
+    public: raw
+    internal: raw
+    sensitive: hidden
+  auditor:
+    public: raw
+    internal: raw
+    sensitive: mask
+
+# 例外放行：敏感字段取原文需满足的条件（文档 05 3.2 括号内条款）
+exception_policy:
+  allowed_roles:
+    - engineer
+    - director
+  requires: 显式申请 + 审批人签署 + 审计留痕
+  default: deny

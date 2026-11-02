@@ -1,0 +1,66 @@
+# LabBridge 轻量审核规则
+# 对应文档 04 第四章（三条最小规则）、文档 07 第三章（动态风险触发与熔断）
+#
+# 设计原则（文档 04 第七节）：AI「薄」到可解释，规则为主、LLM 为辅。
+# 每条标记都要能回答「为什么」——这在基层建立信任比准确率数字更重要。
+
+meta:
+  version: 1.0
+  effective_from: 2026-10-22
+  signed_by: 待签署
+  philosophy: 规则可逐条追溯，不做黑箱模型
+
+rules:
+  - id: R1
+    name: 异常标志聚合
+    desc: 仪器 H/L 标志与参考区间不一致
+    enabled: true
+    action: flag
+
+  - id: R2
+    name: 危急值预筛
+    desc: 按预设阈值标记
+    enabled: true
+    params:
+      thresholds: critical_values.yaml
+    action: flag_urgent
+
+  - id: R3
+    name: 重复矛盾结果提示
+    desc: 同一患者短期内相同项目结果显著漂移
+    enabled: true
+    params:
+      window_days: 7
+      drift_pct: 30
+    action: flag
+
+# 输出约束：只出「待关注列表」，绝不下临床结论（文档 03、04：不替代签字）
+output:
+  form: 待关注列表
+  forbidden_wording:
+    - 已审核
+    - 已签发
+    - 结论为
+    - 诊断
+    - 确诊
+  mandatory_notice: 本列表为待人工关注项，不构成审核结论，不替代签字
+
+# 熔断阈值（文档 07 第三章：动态风险触发）
+circuit_breaker:
+  model_drift:
+    metric: agreement_rate
+    op: "<"
+    agreement_rate_min: 0.95
+    action: 切换人工全量复核
+  abnormal_spike:
+    metric: abnormal_spike_ratio
+    op: ">"
+    ratio_max: 0.30
+    action: 隔离数据源并审计
+  compliance:
+    require_all: true
+    items:
+      - 等保2.0三级
+      - 商用密码应用安全性评估
+      - 医疗健康数据安全专项评估
+    action: 暂停跨院互通，仅保留本地脱敏闭环

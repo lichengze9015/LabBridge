@@ -1,0 +1,29 @@
+# 运行时数据（首次运行自动生成，含日志 / 账户 / 证据包，不得入库）
+v2_data/
+*.jsonl
+*.jsonl.*.jsonl
+.apikey.salt
+login_state.json
+users.json
+records.json
+api_state.json
+evidence_pack/
+selftest_report.docx
+
+# Python 字节码与缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# PyInstaller 构建产物
+build/
+dist/
+build_tmp*/
+*.exe
+*.manifest
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

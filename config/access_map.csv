@@ -1,0 +1,7 @@
+﻿user_id,role,dept,region,scope,pii_level
+eng01,engineer,信息科,全院,*,L3
+dir01,director,检验科,全院,*,L3
+lead01,lead,检验科,本院,检验科,L2
+tech01,technician,检验科,本院,检验科,L1
+tech02,technician,心内科,本院,心内科,L1
+aud01,auditor,质控科,全院,*,L2

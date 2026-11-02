@@ -1,0 +1,36 @@
+# 验收断言：把文档 02 的量化基线变成可执行校验
+# 对应文档 02 第三节（分层可测量目标）与末节建议的 acceptance.yaml
+#
+# 标注「建议值」的项，正式立项时须按场景校准；
+# 场景标准（脱敏正确率 / 留痕率 / 完整率 / 一致率）为硬基线，不接受降级。
+
+meta:
+  version: 1.0
+  effective_from: 2026-10-22
+  signed_by: 待签署
+
+baseline:
+  clause_match_accuracy:
+    op: ">="
+    value: 0.90
+    note: 建议值，按场景校准（目标1）
+  deidentify_accuracy:
+    op: "=="
+    value: 1.00
+    note: 场景标准，脱敏后回扫命中即阻断（目标1）
+  log_trace_coverage:
+    op: "=="
+    value: 1.00
+    note: 全程留痕率（红线3）
+  sample_capture_min:
+    op: ">="
+    value: 50
+    note: 连续抓取标本数（目标3）
+  result_completeness:
+    op: ">="
+    value: 0.99
+    note: 结果完整率（目标3）
+  abnormal_agreement:
+    op: ">="
+    value: 0.95
+    note: AI 标记与人工判断一致率（目标3）

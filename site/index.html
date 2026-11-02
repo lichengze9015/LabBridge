@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LabBridge · 检验数据桥接 Demo</title>
+<style>
+:root{
+  --bg:#ffffff; --surface:#f7f8fa; --border:#e3e6ea;
+  --text:#1a1d21; --muted:#5f6672; --accent:#185fa5; --accent-soft:#e6f1fb;
+  --ok:#0f6e56; --ok-soft:#e1f5ee;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.7; font-size:15px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:56px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+h1{font-size:30px;font-weight:600;line-height:1.35;letter-spacing:-0.01em}
+h2{font-size:21px;font-weight:600;margin-bottom:8px}
+h3{font-size:16px;font-weight:600;margin-bottom:6px}
+p{color:var(--muted)}
+.lead{font-size:16px;color:var(--muted);margin-top:14px}
+.sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+header{padding:56px 0 40px;border-bottom:1px solid var(--border)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{
+  background:var(--accent-soft); color:var(--accent);
+  border:1px solid #b5d4f4; border-radius:20px;
+  padding:5px 14px; font-size:13px; font-weight:500;
+}
+.chip.gray{background:var(--surface);color:var(--muted);border-color:var(--border)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:22px;
+}
+.card p{font-size:14px;margin-top:6px}
+.tag{
+  display:inline-block;font-size:12px;font-weight:600;
+  color:var(--accent);background:var(--accent-soft);
+  border-radius:5px;padding:2px 8px;margin-bottom:10px;
+}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+th{font-weight:600;font-size:13px;color:var(--muted);background:var(--surface)}
+td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+.tbl-scroll{overflow-x:auto}
+
+pre{
+  background:#1a1d21;color:#e8eaed;border-radius:10px;
+  padding:18px 20px;overflow-x:auto;font-size:13px;line-height:1.6;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+.stat{text-align:center}
+.stat .n{font-size:28px;font-weight:600;color:var(--ok);line-height:1.2}
+.stat .l{font-size:13px;color:var(--muted);margin-top:4px}
+
+ul.docs{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+ul.docs li{font-size:14px;color:var(--muted);padding:4px 0}
+ul.docs b{color:var(--text);font-weight:600}
+
+.note{
+  background:var(--ok-soft);border:1px solid #9fe1cb;border-radius:10px;
+  padding:16px 20px;font-size:14px;color:#085041;
+}
+.warn{
+  background:#faeeda;border:1px solid #fac775;border-radius:10px;
+  padding:16px 20px;font-size:14px;color:#633806;margin-top:20px;
+}
+a.btn{
+  display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+  padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;margin-top:8px;
+}
+footer{padding:40px 0 56px;text-align:center}
+footer p{font-size:13px}
+
+@media(max-width:720px){
+  .wrap{padding:0 18px}
+  h1{font-size:24px}
+  section{padding:40px 0}
+  .grid2,.grid3,ul.docs{grid-template-columns:1fr}
+  .stat .n{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>LabBridge</h1>
+    <p class="lead">面向二甲及乡镇卫生院的检验数据桥接 Demo。把仪器数据与纸质报告汇入统一记录，全程脱敏、留痕、可追溯。</p>
+    <div class="chips">
+      <span class="chip">零第三方运行时依赖</span>
+      <span class="chip">纯 Python 标准库</span>
+      <span class="chip">MIT 许可</span>
+      <span class="chip gray">主程序 3231 行 + 15 模块 7117 行</span>
+      <span class="chip gray">tkinter GUI · 11 页签</span>
+    </div>
+    <a class="btn" href="https://github.com/lichengze9015/LabBridge">在 GitHub 查看源码</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>它解决什么问题</h2>
+    <p class="sub">基层检验科有三个绕不开的现实，本 Demo 逐一给出了技术答案。</p>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag">轨道 A · 直连</span>
+        <h3>仪器有数据，但取不出来</h3>
+        <p>实现 ASTM E1381 / E1394 只读接收端，直接接管仪器吐出的数据流，无需厂商配合开放接口。</p>
+      </div>
+      <div class="card">
+        <span class="tag">轨道 B · 兜底</span>
+        <h3>老设备没接口，只能手抄</h3>
+        <p>拍照 OCR 抽取 + 人工确认。不改造任何设备即可录入，把人的复核留在流程内而非流程外。</p>
+      </div>
+      <div class="card">
+        <span class="tag">合规</span>
+        <h3>数据必须留在院内</h3>
+        <p>全程本地处理，不上云、不外传。5 条红线以代码常量形式强制执行，违反即拦截。</p>
+      </div>
+      <div class="card">
+        <span class="tag">审计</span>
+        <h3>要能说清每一步是谁做的</h3>
+        <p>审计日志采用哈希链结构，改动或删除任意一条都会立刻断链并被检出，而非依赖流程承诺。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>核心设计取舍</h2>
+    <p class="sub">这几处是本项目与一般练手项目的分界线。</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>审计日志用哈希链，不是"记个文件"</h3>
+        <p>每条日志带 <code>prev_hash</code>。改任意一条、或删掉中间任意一段，校验都会立刻断链。这是"可追溯"能站得住的技术前提。</p>
+      </div>
+      <div class="card">
+        <h3>红线在代码里，不在文档里</h3>
+        <p>数据不出院、禁止明文留存 PII、无审批不处置等 5 条红线，以 <code>labbridge_gate.py</code> 中的 <code>REDLINES</code> 常量强制执行。</p>
+      </div>
+      <div class="card">
+        <h3>零第三方依赖是主动选择</h3>
+        <p>基层环境常无稳定外网与运维能力。零依赖意味着无供应链风险、无许可费用、无版本冲突——代价是 YAML 解析、MCP 协议、SAS XPORT 解析都需自行实现。</p>
+      </div>
+      <div class="card">
+        <h3>第三方许可逐一审查</h3>
+        <p>社区轮子很多，但授权未必允许商用。选型清单逐项标注"可直接用 / 可重写 / 重写也没用"的判定与依据。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>工程质量</h2>
+    <p class="sub">以下均可自行复现，不是自我声明。</p>
+    <div class="grid3">
+      <div class="card stat"><div class="n">48/48</div><div class="l">端到端验收断言通过</div></div>
+      <div class="card stat"><div class="n">15</div><div class="l">模块各带独立自检入口</div></div>
+      <div class="card stat"><div class="n">0</div><div class="l">受控配置 SHA256 失配</div></div>
+      <div class="card stat"><div class="n">12</div><div class="l">份立项文档</div></div>
+      <div class="card stat"><div class="n">36</div><div class="l">项 PDCA 质量工具</div></div>
+      <div class="card stat"><div class="n">0</div><div class="l">第三方运行时依赖</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>模块结构</h2>
+    <p class="sub">主程序负责 GUI，<code>code/</code> 下 15 个模块为业务核心，不依赖 tkinter 与任何 Windows API，可整块移植到服务端。</p>
+    <div class="tbl-scroll">
+    <table>
+      <tr><th>模块</th><th>职责</th></tr>
+      <tr><td>labbridge_astm.py</td><td>轨道 A：ASTM E1381 / E1394 只读接收端</td></tr>
+      <tr><td>labbridge_ocr.py</td><td>轨道 B：拍照 OCR 抽取与人工确认</td></tr>
+      <tr><td>labbridge_deid.py</td><td>脱敏与访问控制引擎</td></tr>
+      <tr><td>labbridge_screen.py</td><td>审核规则引擎与熔断检测</td></tr>
+      <tr><td>labbridge_auditlog.py</td><td>审计日志中间件（哈希链防篡改）</td></tr>
+      <tr><td>labbridge_evidence.py</td><td>证据包 / 资产包 / 验收断言 / CAPA</td></tr>
+      <tr><td>labbridge_gate.py</td><td>红线自检 · 阶段门 · 审批门</td></tr>
+      <tr><td>labbridge_pdca.py</td><td>PDCA 质量工具集（SPC、FMEA、控制图等）</td></tr>
+      <tr><td>labbridge_config.py</td><td>配置层（含 YAML 子集解析器）</td></tr>
+      <tr><td>labbridge_report.py</td><td>证据报告生成器（docx）</td></tr>
+      <tr><td>labbridge_docparse.py</td><td>文档解析管线</td></tr>
+      <tr><td>labbridge_mcp.py</td><td>MCP Server（零依赖实现）</td></tr>
+      <tr><td>labbridge_nhanes.py</td><td>NHANES 真实公开数据回放</td></tr>
+      <tr><td>labbridge_apibridge.py</td><td>外部接口对接桥（ASTM / OCR / LIS / LLM）</td></tr>
+      <tr><td>labbridge_demo.py</td><td>端到端 Demo 编排器</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>快速开始</h2>
+    <p class="sub">没有依赖安装步骤——这是本项目刻意坚持的约束。</p>
+    <pre><code>git clone https://github.com/lichengze9015/LabBridge.git
+cd LabBridge
+python labbridge_v2_app.py
+
+# 验证安装
+python test_v240.py</code></pre>
+    <div class="note" style="margin-top:20px">
+      首次运行会在同级目录生成 <code>v2_data/</code>（日志、账户、证据包）。DEMO 账户：工程师 <b>1111</b> · 组长 <b>2222</b> · 主任 <b>3333</b> · 检验员 <b>4444</b>。
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>文档</h2>
+    <p class="sub">12 份立项文档随源码一同发布，覆盖从战略到合规的完整过程。</p>
+    <ul class="docs">
+      <li><b>00</b> 总纲与文档索引</li>
+      <li><b>01</b> 战略战术与质量方针</li>
+      <li><b>02</b> 项目目标与交付物</li>
+      <li><b>03</b> 利益相关方与沟通计划</li>
+      <li><b>04</b> 双轨场景与技术方案</li>
+      <li><b>05</b> 数据安全权限与日志管控</li>
+      <li><b>06</b> 实施流程与人员配置</li>
+      <li><b>07</b> 风险清单与 CAPA 闭环</li>
+      <li><b>08</b> 成本收益与资产归档</li>
+      <li><b>09</b> 社区组件选型与授权审查</li>
+      <li><b>10</b> 模块反溯与重写</li>
+      <li><b>11</b> 封包说明</li>
+    </ul>
+    <div class="warn">
+      <b>免责声明：</b>本项目是技术 Demo，不是医疗器械，不具备任何临床诊断用途，不得用于真实诊疗场景。内置数据回放使用 NHANES（美国 CDC）公开数据；代码中出现的姓名、身份证号、手机号均为脱敏模块的测试用例，非真实个人信息。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="btn" href="https://github.com/lichengze9015/LabBridge">在 GitHub 查看源码</a>
+    <p style="margin-top:20px">MIT License · 第三方组件授权结论见仓库 THIRD_PARTY_NOTICES.md</p>
+  </div>
+</footer>
+
+</body>
+</html>
