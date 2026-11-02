@@ -1,179 +1,164 @@
 # 09 · GitHub 社区 Agent/Skill 选型清单
 
 > 项目代号：LabBridge（面向二甲及乡镇卫生院的检验数据桥接）
-> 文档集版本：V4.2 ｜ 编制日期：2026-10-30 ｜ 对应软件版本：V2.5.2
-> 社区数据核实日期：**2026-10-22**（数据取自 GitHub API 与 PyPI，★ 为 star 数，d 为距核实日未更新天数）
+> 文档集版本：V4.2 ｜ 编制日期：2026-10-30
+> 社区数据核实日期：2026-10-22（数据取自 GitHub API 与 PyPI，★ 为 star 数，d 为距核实日未更新天数）
 > 对应封包：`LabBridgeV4`
-> 本文职责：判定社区资产哪些可直接用、哪些可由 WorkBuddy 封包成 Skill、哪些有授权坑
-> 代码锚点：`01_软件封包/app/code/THIRD_PARTY_NOTICES.md`、各模块 Provenance 头部
 
-> **⚠️ 数据时效性声明**：表中 ★ 数与更新天数为 2026-10-22 快照，**引用时须以该日期为基准**。
+> ⚠️ 数据时效性声明：表中 ★ 数与更新天数为 2026-10-22 快照，引用时须以该日期为基准。
 > 正式立项或商业化前须重新核实；核实后更新本表，并在 12 号台账登记变更。
 
----
+〔编者注：00 号《总纲与文档索引》与 12 号《版本变更与追溯台账》未收录于本开源文档集，完整版见交付包 02_立项文档/。文中对 00 号、12 号的引用按此理解。〕
 
 ## 一、结论速览
 
-### 🟢 绿灯：授权明确 + 活跃维护 + 可直接封包
+#### 🟢 绿灯：授权明确 + 活跃维护 + 可直接封包
 
 | 项目 | 用途 | License | ★ | 最近更新 |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | `labmcp-astm-lis`（K-Dense-AI/lab-instrument-mcps） | 轨道 A：ASTM E1381/E1394 接收端 + MCP | Apache-2.0 | 20 | 26d |
 | RapidAI/RapidOCR | 轨道 B：端侧/边缘 OCR | Apache-2.0 | 8.2k | 1d |
 | PaddlePaddle/PaddleOCR | 轨道 B：OCR（备选/精度优先） | Apache-2.0 | 91k | 36d |
 | tesseract-ocr/tesseract | 轨道 B：OCR（轻量兜底） | Apache-2.0 | 77k | 2d |
-| Presidio（**已迁至 data-privacy-stack/presidio**） | PII 识别/脱敏 | MIT | 11.4k | 3d |
+| Presidio（已迁至 data-privacy-stack/presidio） | PII 识别/脱敏 | MIT | 11.4k | 3d |
 | danyuchn/pii-guard | 中文场景 PII 拦截 | MIT | 251 | 1d |
 | K-Dense-AI/scientific-agent-skills | 科研/实验类 Skill 合集参考 | MIT | 53k | 3d |
 | VoltAgent/awesome-agent-skills | Skill 合集索引 | MIT | 36k | 2d |
 | obra/superpowers | Agent 工作流 Skill 范式 | MIT | 303k | 1d |
 | ollama / ggml-org/llama.cpp | 本地私有化底座（敏感场景） | MIT | 184k / 132k | 1d |
 
-### 🟡 黄灯：可用，但有条款要看清楚
+#### 🟡 黄灯：可用，但有条款要看清楚
 
 | 项目 | 问题 | 处理建议 |
-|---|---|---|
-| anthropics/skills | **docx / pdf / pptx / xlsx 四个 skill 是 source-available，不是开源**；其余多为 Apache-2.0 | 只参考其 `spec/` 与 `template/`，不直接复制文档类 skill 的代码 |
+| --- | --- | --- |
+| anthropics/skills | docx / pdf / pptx / xlsx 四个 skill 是 source-available，不是开源；其余多为 Apache-2.0 | 只参考其 `spec/` 与 `template/`，不直接复制文档类 skill 的代码 |
 | modelcontextprotocol/servers | 正在从 MIT 过渡到 Apache-2.0，新旧贡献许可并存 | 用可以，若二次分发需逐文件核对许可头 |
-| opendatalab/MinerU | Apache-2.0 **+ 附加商业条款**：营收/规模超阈值需另签商业许可 | Demo/个人作品集无影响；商业化前必须确认阈值 |
+| opendatalab/MinerU | Apache-2.0 + 附加商业条款：营收/规模超阈值需另签商业许可 | Demo/个人作品集无影响；商业化前必须确认阈值 |
 | datalab-to/marker | Apache-2.0，但依赖模型权重与商用 API 有边界 | 仅本地离线调用，不接其托管服务 |
 
-### 🔴 红灯：不建议直接用
+#### 🔴 红灯：不建议直接用
 
 | 项目 | 原因 |
-|---|---|
-| LeapBeyond/scrubadub | Apache-2.0 但 **1147 天未更新**，实质停维护 |
-| ComposioHQ/awesome-claude-skills | ★77k 但 **许可证 NOASSERTION（未声明）**，无法确认授权 |
+| --- | --- |
+| LeapBeyond/scrubadub | Apache-2.0 但 1147 天未更新，实质停维护 |
+| ComposioHQ/awesome-claude-skills | ★77k 但 许可证 NOASSERTION（未声明），无法确认授权 |
 | GitHub 上零散 ASTM 项目（PramodTeng/LISIntegration ★2、DinhLucent/medical-lab-interface ★1、cosyte/astm ★0） | 星数极低、无维护、无测试，不适合作为 Demo 技术底座 |
 | AGPL 类项目（如 CrossPaste、PyMuPDF 等） | AGPL 有传染性，与「业务资产解耦、可闭源交付」的诉求冲突 |
 
-> **V4 执行状态**：以上三区判定**已在 V4 封包中全部落地**。红灯项目零引入；黄灯项目仅作格式参考、
-> 无代码复制；绿灯项目中，凡涉及 P0 主干能力的组件均已评估自研替代或降级为可选适配器。逐项落地对照见 10 号文档。
-
----
+> 执行状态：以上三区判定已在 `LabBridgeV4` 封包中全部落地。红灯项目零引入；黄灯项目仅作格式参考、无代码复制；绿灯项目中，凡涉及 P0 主干能力的组件均已评估自研替代或降级为可选适配器。逐项落地对照见 10 号文档。
 
 ## 二、按 Demo 模块逐个对齐
 
-### 2.1 模块 1｜轨道 A：ASTM 旁路接收（见 04 号文档）
+#### 2.1 模块 1｜轨道 A：ASTM 旁路接收（见 04 号文档）
 
-**社区首选：`labmcp-astm-lis`**
+社区首选：`labmcp-astm-lis`
 
 | 项 | 事实 |
-|---|---|
+| --- | --- |
 | 形态 | PyPI 包（v0.1.3）+ MCP Server，MCP 名 `io.github.K-Dense-AI/labmcp-astm-lis` |
 | 仓库 | `K-Dense-AI/lab-instrument-mcps`（子目录 `servers/health/astm-lis-analyzer`） |
-| 授权 | **Apache-2.0**（PyPI `license_expression` 已声明，仓库 LICENSE 一致） |
+| 授权 | Apache-2.0（PyPI `license_expression` 已声明，仓库 LICENSE 一致） |
 | 维护 | ★20，26 天前有提交，0 open issue |
 | 环境 | Python ≥ 3.10 |
-| 能力 | 串口 / TCP client / TCP listener 三种模式；确认帧、校验和、重组消息；按样本/患者/项目/时间查询；**默认对姓名、出生日期、地址、电话 redact** |
+| 能力 | 串口 / TCP client / TCP listener 三种模式；确认帧、校验和、重组消息；按样本/患者/项目/时间查询；默认对姓名、出生日期、地址、电话 redact |
 
-**判断**：授权干净、可用、可封包。但 ★20、单人/小团队产出，属早期项目——是「唯一选择」，也是「单点依赖」。
+判断：授权干净、可用、可封包。但 ★20、单人/小团队产出，属早期项目——是「唯一选择」，也是「单点依赖」。
 
-处理三步（V3 已执行完毕，V4 继承）：
+处理三步：
 
-1. **fork 锁定版本快照**，避免上游消失或破坏性更新；
+1. fork 锁定版本快照，避免上游消失或破坏性更新；
 2. 外面包一层审计中间件（按 05 号文档日志要求）；
 3. 把「默认 redact」字段清单落成自己签署的配置文件，不依赖上游默认值 → 对应 `config/classification_rules.yaml`。
 
-> ✅ **落地状态（V4 实测）**：因单点依赖风险（07 号 R-10），ASTM 接收端已自研 `labbridge_astm.py`
-> 作为**默认实现并打进主 EXE**，`labmcp-astm-lis` 降为可选适配器。R-10 残余风险标记「已降至可选」。
+> ✅ 落地状态：因单点依赖风险（07 号 R-10），ASTM 接收端已自研 `labbridge_astm.py`作为默认实现并打进主 EXE，`labmcp-astm-lis` 降为可选适配器。R-10 残余风险标记「已降至可选」。
 
-### 2.2 模块 2｜轨道 B：拍照 OCR（见 04 号文档）
+#### 2.2 模块 2｜轨道 B：拍照 OCR（见 04 号文档）
 
 | 项目 | License | ★ | 更新 | 适配度 | 说明 |
-|---|---|---|---|---|---|
-| **RapidAI/RapidOCR** | Apache-2.0 | 8.2k | 1d | ★★★★★ | ONNXRuntime 推理、无重依赖、体积小，最适合端侧/边缘 |
+| --- | --- | --- | --- | --- | --- |
+| RapidAI/RapidOCR | Apache-2.0 | 8.2k | 1d | ★★★★★ | ONNXRuntime 推理、无重依赖、体积小，最适合端侧/边缘 |
 | PaddlePaddle/PaddleOCR | Apache-2.0 | 91k | 36d | ★★★★ | 中文识别精度最好、生态最全，依赖较重，适合服务端/离线工作站 |
 | tesseract-ocr/tesseract | Apache-2.0 | 77k | 2d | ★★ | 老牌、C++ 依赖轻，中文手写体表现一般，作兜底 |
 
-**组合建议**：端侧 RapidOCR 跑第一遍，置信度低或关键字段缺失时回退 PaddleOCR 二次识别，人工一键确认兜底——落实 07 号文档「OCR 预填 + 人工确认，半自动是设计而非缺陷」。
+组合建议：端侧 RapidOCR 跑第一遍，置信度低或关键字段缺失时回退 PaddleOCR 二次识别，人工一键确认兜底——落实 07 号文档「OCR 预填 + 人工确认，半自动是设计而非缺陷」。
 
-**授权提醒**：代码均为 Apache-2.0，但**模型权重许可需单独确认**，别默认「代码 Apache 就等于模型 Apache」。
+授权提醒：代码均为 Apache-2.0，但模型权重许可需单独确认，别默认「代码 Apache 就等于模型 Apache」。
 
-> ✅ **落地状态（V4 实测）**：`labbridge_ocr.py` **不含任何 OCR 引擎代码**，只做后端适配、结构化抽取、
-> 人工确认队列三件事。三种引擎全部为可选后端——装了就用，没装就降级。因此 **V4 交付包运行时零 OCR 依赖**。
+> ✅ 落地状态：`labbridge_ocr.py` 不含任何 OCR 引擎代码，只做后端适配、结构化抽取、人工确认队列三件事。三种引擎全部为可选后端——装了就用，没装就降级。因此 V4 交付包运行时零 OCR 依赖。
 
-### 2.3 模块 3｜脱敏引擎（见 05 号文档）
+#### 2.3 模块 3｜脱敏引擎（见 05 号文档）
 
 | 项目 | License | ★ | 更新 | 说明 |
-|---|---|---|---|---|
-| **Presidio** | MIT | 11.4k | 3d | 事实标准。NER + 正则 + 自定义识别器。**仓库已从 `microsoft/presidio` 迁至 `data-privacy-stack/presidio`**，引用时别用旧链接 |
+| --- | --- | --- | --- | --- |
+| Presidio | MIT | 11.4k | 3d | 事实标准。NER + 正则 + 自定义识别器。仓库已从 `microsoft/presidio` 迁至 `data-privacy-stack/presidio`，引用时别用旧链接 |
 | danyuchn/pii-guard | MIT | 251 | 1d | 中文方向补充，可与 Presidio 叠加二次回扫 |
-| ~~scrubadub~~ | Apache-2.0 | 433 | **1147d** | 停维护，不推荐 |
+| ~~scrubadub~~ | Apache-2.0 | 433 | 1147d | 停维护，不推荐 |
 
 与 05 号文档「人定规则、机器执行、人审例外」三层模型的对接：规则层 → 自定义识别器配置 + 签署的分级规则文件；执行层 → 自动打标；例外层 → 低置信度条目进人工裁定队列。
 
-> ✅ **落地状态（V4 实测）**：`labbridge_deid.py` 默认**不自依赖** Presidio，保留 `PresidioAdapter` 适配路径。
-> 理由：基层场景要脱的字段是**已知的结构化字段**，正则 + 掩码策略足够且可控，不引入 NER 模型的资源开销与误判黑箱。
+> ✅ 落地状态：`labbridge_deid.py` 默认不自依赖 Presidio，保留 `PresidioAdapter` 适配路径。理由：基层场景要脱的字段是已知的结构化字段，正则 + 掩码策略足够且可控，不引入 NER 模型的资源开销与误判黑箱。
 
-### 2.4 模块 4｜Agent / Skill 规范与合集
+#### 2.4 模块 4｜Agent / Skill 规范与合集
 
 | 项目 | License | ★ | 更新 | 用途 |
-|---|---|---|---|---|
-| **anthropics/skills** | 多数 Apache-2.0；**docx/pdf/pptx/xlsx 为 source-available** | 183k | 13d | 看 `spec/` 与 `template/`，作封包格式参考 |
+| --- | --- | --- | --- | --- |
+| anthropics/skills | 多数 Apache-2.0；docx/pdf/pptx/xlsx 为 source-available | 183k | 13d | 看 `spec/` 与 `template/`，作封包格式参考 |
 | agentskills.io | — | — | — | Agent Skills 标准独立站点 |
 | K-Dense-AI/scientific-agent-skills | MIT | 53k | 3d | 科研/实验类 skill 组织方式参考 |
 | obra/superpowers | MIT | 303k | 1d | Agent 工作流 skill 拆分范式 |
 | VoltAgent/awesome-agent-skills | MIT | 36k | 2d | 索引型合集 |
-| ~~ComposioHQ/awesome-claude-skills~~ | **未声明** | 77k | 34d | 星数高但无许可证，Do not touch |
+| ~~ComposioHQ/awesome-claude-skills~~ | 未声明 | 77k | 34d | 星数高但无许可证，Do not touch |
 
-**⚠️ 最易踩坑**：`anthropics/skills` 里四个文档 skill（docx/pdf/pptx/xlsx）明写 **source-available, not open source**，只能看不能搬。封包自己的 LabBridge skill 用 `spec/` + `template/` 即可。
+⚠️ 最易踩坑：`anthropics/skills` 里四个文档 skill（docx/pdf/pptx/xlsx）明写 source-available, not open source，只能看不能搬。封包自己的 LabBridge skill 用 `spec/` + `template/` 即可。
 
-> ✅ **落地状态（V4 实测）**：`labbridge_docparse.py` 与 `labbridge_report.py` 依据 **OOXML / ECMA-376 与 PDF ISO 32000 公开标准**
-> 独立编写，各文件头已书面声明「未参考 anthropics/skills 中四个文档 skill 的任何内容」。
+> ✅ 落地状态：`labbridge_docparse.py` 与 `labbridge_report.py` 依据 OOXML / ECMA-376 与 PDF ISO 32000 公开标准独立编写，各文件头已书面声明「未参考 anthropics/skills 中四个文档 skill 的任何内容」。
 
-### 2.5 模块 5｜MCP 与编排（可选）
+#### 2.5 模块 5｜MCP 与编排（可选）
 
 | 项目 | License | ★ | 更新 | 备注 |
-|---|---|---|---|---|
-| modelcontextprotocol/servers | MIT → Apache-2.0 **过渡中** | 91k | 3d | 二次分发需逐文件核对 |
+| --- | --- | --- | --- | --- |
+| modelcontextprotocol/servers | MIT → Apache-2.0 过渡中 | 91k | 3d | 二次分发需逐文件核对 |
 | langchain-ai/langgraph | MIT | 44k | 1d | 若自建编排 |
 | crewAIInc/crewAI | MIT | 60k | 1d | 若做多角色协同 |
 | openai/openai-agents-python | MIT | 30k | 2d | 轻量 Agent SDK |
 
-**注意**：若以 WorkBuddy 为 Agent 运行时，这一层大概率不需要——工具更适合封成 Skill + 脚本，而非再套框架。**框架是给「没有平台」的人准备的。**
+注意：若以 WorkBuddy 为 Agent 运行时，这一层大概率不需要——工具更适合封成 Skill + 脚本，而非再套框架。框架是给「没有平台」的人准备的。
 
-> ✅ **落地状态（V4 实测）**：`labbridge_mcp.py` 依据 MCP 公开行为规范（initialize / tools/list / tools/call 三种
-> JSON-RPC 2.0 方法、stdio 传输、能力协商）独立实现，**未参考、未复制** `modelcontextprotocol/servers` 任何源码；
-> 编排层 `labbridge_demo.py` 未引入 langgraph / crewAI，只是一条确定的流水线。
+> ✅ 落地状态：`labbridge_mcp.py` 依据 MCP 公开行为规范（initialize / tools/list / tools/call 三种JSON-RPC 2.0 方法、stdio 传输、能力协商）独立实现，未参考、未复制 `modelcontextprotocol/servers` 任何源码；编排层 `labbridge_demo.py` 未引入 langgraph / crewAI，只是一条确定的流水线。
 
-### 2.6 模块 6｜本地私有化底座（见 01 号文档附则 4、05 号文档第四章）
+#### 2.6 模块 6｜本地私有化底座（见 08 号文档附则 4、05 号文档第四章）
 
 | 项目 | License | ★ | 更新 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | ollama/ollama | MIT | 184k | 1d |
 | ggml-org/llama.cpp | MIT | 132k | 1d |
 
 敏感场景若评估结论是「公共大模型不适用」，这两条路可做到数据完全不出本地，支撑 05 号文档「最小暴露面」。
 
----
+## 三、授权红线
 
-## 三、授权红线：三个容易被忽略的点
+#### 3.1 协议公开 ≠ 标准文本免费
 
-### 3.1 协议公开 ≠ 标准文本免费
-
-`ASTM E1381 / E1394`、`CLSI LIS1-A / LIS2-A2` 是**付费标准**。
+`ASTM E1381 / E1394`、`CLSI LIS1-A / LIS2-A2` 是付费标准。
 
 - ✅ 可以：说「本 Demo 兼容 ASTM E1381/E1394 协议」，引用协议编号，参考公开实现写代码；
 - ❌ 不可以：把标准原文扫描/复制进知识库或证据包再分发。
 
 知识库只放自撰的协议要点与字段说明笔记，不放标准原文；核对时引用编号 + 购买渠道。
 
-### 3.2 医学术语体系各有各的条款
+#### 3.2 医学术语体系各有各的条款
 
 | 术语 | 授权情况 |
-|---|---|
+| --- | --- |
 | LOINC | Regenstrief 发布，免费使用但需接受其许可条款，对再分发有限制 |
 | SNOMED CT | 需通过成员国/地区许可机构获取，中国需走对应渠道 |
 | ICD-10（国家医保版） | 国内由国家相关部门发布，按国内规定使用 |
 
-「检测项目标准化」优先只做**字符串归一化 + 本地对照表**，不引入需签署许可的术语库。对应 07 号 R-12（已规避）。
+「检测项目标准化」优先只做字符串归一化 + 本地对照表，不引入需签署许可的术语库。对应 07 号 R-12（已规避）。
 
-### 3.3 代码许可 ≠ 模型权重许可
+#### 3.3 代码许可 ≠ 模型权重许可
 
-PaddleOCR / RapidOCR 代码 Apache-2.0，但预训练权重许可需单独确认。权重来源与许可**单独记进资产包 manifest**。对应 07 号 R-11。
-
----
+PaddleOCR / RapidOCR 代码 Apache-2.0，但预训练权重许可需单独确认。权重来源与许可单独记进资产包 manifest。对应 07 号 R-11。
 
 ## 四、推荐组合（最小可行 Demo）
 
@@ -194,38 +179,27 @@ PaddleOCR / RapidOCR 代码 Apache-2.0，但预训练权重许可需单独确认
 日志 ── labbridge_auditlog，统一落 timestamp + sha256 + actor_id（哈希链）
 ```
 
-**自写 vs 借用**：真正需要自写的只有三块——**审计中间件、审核规则引擎、审批门**，这恰是方法论资产，也是外审唯一会追问的部分。其余全部站在开源组件上。这个比例对单人 30 天 Demo 是合理的。
-
-> V4 相对 V3 的实质性变化：除 OCR 引擎与本地底座外，**主干全部收归自研**，
-> 社区组件退居「可选增强」位。代价是自写代码量上升，收益是消除了 ★20 早期项目的单点依赖与许可过渡期风险。
-
----
-
-## 五、零依赖策略及其代价（V4 补强）
-
-V3 阶段提出「优先选零依赖」的原则，V4 将其固化为**工程硬约束**：
+## 五、零依赖策略及其代价
 
 | 维度 | 收益 | 代价 |
-|---|---|---|
-| 部署 | Demo 可跑在乡镇卫生院**没有 pip 环境的普通电脑**上 | 部分能力（OCR 精度、NER 脱敏）需自行实现简化版 |
-| 许可 | 运行时**零第三方许可义务**，无 AGPL 传染风险，可闭源交付 | 需自行编写 YAML/OOXML 等格式解析器 |
+| --- | --- | --- |
+| 部署 | Demo 可跑在乡镇卫生院没有 pip 环境的普通电脑上 | 部分能力（OCR 精度、NER 脱敏）需自行实现简化版 |
+| 许可 | 运行时零第三方许可义务，无 AGPL 传染风险，可闭源交付 | 需自行编写 YAML/OOXML 等格式解析器 |
 | 审计 | Provenance 清晰，每个文件头部可说明来源 | 社区最佳实践无法直接复用 |
 | 体积 | 单 EXE 自包含，离线可跑 | EXE 体积约 2.4 MB + `_internal` 约 26 MB（Python 运行时主导） |
 
-**补偿控制措施**：
+补偿控制措施：
 
-1. 自研解析器必须与成熟解析器做**交叉校验**（如 `miniyaml` vs PyYAML），并明确记录不支持的语法子集（05 号第九节）；
-2. 可选后端必须实现**优雅降级**，装了就用、没装不影响主干；
-3. 任何自研替代必须**在文件头写 Provenance**，说明依据的公开标准与未复制的来源。
+1. 自研解析器必须与成熟解析器做交叉校验（如 `miniyaml` vs PyYAML），并明确记录不支持的语法子集（05 号第九节）；
+2. 可选后端必须实现优雅降级，装了就用、没装不影响主干；
+3. 任何自研替代必须在文件头写 Provenance，说明依据的公开标准与未复制的来源。
 
----
-
-## 六、可由 WorkBuddy 封包的清单与顺序
+## 六、由 WorkBuddy 封包的清单与顺序
 
 封包格式：用户级 skill 目录 `~/.workbuddy/skills/<skill-name>/`，核心是 `SKILL.md`（YAML frontmatter 含 `name` / `description`，可选 `version`），同级放脚本与资源。
 
-| 优先级 | 拟封包 Skill | 依赖的社区资产 | 授权 | V4 落地形态 |
-|---|---|---|---|---|
+| 优先级 | 拟封包 Skill | 依赖的社区资产 | 授权 | 交付落地形态 |
+| --- | --- | --- | --- | --- |
 | P0 | `labbridge-astm-receive` | 无（已自研） | — | `labbridge_astm.py`（默认实现） |
 | P0 | `labbridge-deidentify` | Presidio（可选） | MIT | `labbridge_deid.py`（默认自研 + `PresidioAdapter`） |
 | P1 | `labbridge-screen` | 无（自写规则） | — | `labbridge_screen.py` + `screening_rules.yaml` |
@@ -233,54 +207,8 @@ V3 阶段提出「优先选零依赖」的原则，V4 将其固化为**工程硬
 | P2 | `labbridge-evidence` | 无（自写） | — | `labbridge_evidence.py`（资产包/证据包/CAPA/验收断言） |
 | P2 | `labbridge-audit-log` | 无（自写） | — | `labbridge_auditlog.py`（哈希链时间戳服务） |
 
-**P0/P1 四项即可撑起完整 Demo**；P2 是证据链加分项。V4 封包中六项**全部已实现**。
-
----
-
 ## 七、封包前的三个动作
 
-1. **fork + 版本锁定**：`lab-instrument-mcps` fork 到自己账号，commit hash 写进资产包 manifest；
-2. **许可台账**：维护 `THIRD_PARTY_NOTICES.md`，逐项记录组件名 / 版本 / License / 来源 URL / 权重许可状态——既是 Apache-2.0 要求，也是 ISO 外审喜欢看到的受控信息；
-3. **规则文件自持**：把识别器配置和 redact 字段清单导出成自己的 YAML，**由人签署并锚定时间戳**。开源包默认值不能作为「人定规则」的证据。
-
-> V4 执行结果：动作 1 因自研替代而不再必要（保留作可选路径）；动作 2 已完成，台账见 `01_软件封包/app/code/THIRD_PARTY_NOTICES.md`；
-> 动作 3 已完成，8 个受控规则文件 + `SHA256SUMS` 签署清单，2026-10-30 校验 **0 失配**。
-
----
-
-## Agent Demo 落地映射
-
-| 本章节 | 落地动作 |
-|---|---|
-| 一、三档结论 | 选型决策记录，进证据包 `01_风险与评估/` |
-| 二、模块对齐 | 每个模块「首选 + 备选 + 兜底」写进 README 技术选型章 |
-| 三、授权红线 | 三条红线做成 `THIRD_PARTY_NOTICES.md` 头部声明 |
-| 四、推荐组合 | 系统架构图的数据流来源 |
-| 五、零依赖策略 | 部署清单与许可义务核算依据 |
-| 六、封包清单 | `skills/` 目录结构规划，P0/P1 优先实现 |
-
-**一句话总结**：能放心用的是 Apache-2.0 与 MIT 那一批（ASTM 接收、OCR、Presidio、本地底座）；要盯的是 anthropics 四个 source-available 文档 skill、MCP 许可过渡期、MinerU 商业阈值；要避开的是无许可声明的合集和停维护项目。真正需自写的只有审计中间件、审核规则引擎、审批门——恰是本 Demo 的方法论资产所在。
-
----
-
-## 交叉引用
-
-| 内容 | 位置 |
-|---|---|
-| 15 个模块逐项来源与自研边界 | 10 号《黄区模块反溯与重写》 |
-| 受控规则文件与签署清单 | `01_软件封包/app/config/SHA256SUMS`、05 号文档 |
-| 第三方许可台账全文 | `01_软件封包/app/code/THIRD_PARTY_NOTICES.md` |
-| 供应链与授权风险条目 | 07 号 R-10 / R-11 / R-12 |
-| 选型数据核实与更新的历史 | 12 号《版本变更与追溯台账》 |
-
----
-
-## 版本变更记录（V3 → V4）
-
-1. 头部增加「社区数据核实日期 2026-10-22」与时效声明，避免 ★ 数被误读为当前值。
-2. 三档结论每节后新增「**V4 落地状态**」标记，将 V3 的选型判定与 V4 的实际实现逐项对照。
-3. 第四章推荐组合图更新为 V4 实际链路（自研模块 + 可选后端），并补入 V4 相对 V3 的实质变化说明。
-4. **新增第五章「零依赖策略及其代价」**，固化工程硬约束与三项补偿控制措施。
-5. 第六章封包清单新增「V4 落地形态」列，六项全部标注已实现。
-6. 第七章补入 V4 三项动作的实际执行结果（含 8 个受控文件 0 失配）。
-7. 全部 ★ 数、License、更新天数与三档选型结论**保持 V3 原文数字不变**；红灯清单保留 PyMuPDF（AGPL-3.0）。
+1. fork + 版本锁定：`lab-instrument-mcps` fork 到自己账号，commit hash 写进资产包 manifest；
+2. 许可台账：维护 `THIRD_PARTY_NOTICES.md`，逐项记录组件名 / 版本 / License / 来源 URL / 权重许可状态——既是 Apache-2.0 要求，也是 ISO 外审喜欢看到的受控信息；
+3. 规则文件自持：把识别器配置和 redact 字段清单导出成自己的 YAML，由人签署并锚定时间戳。开源包默认值不能作为「人定规则」的证据。
